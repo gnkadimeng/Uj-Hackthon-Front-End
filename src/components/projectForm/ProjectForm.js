@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { baseUrl } from "../../global/baseUrl";
 
 
 export const ProjectForm = () => {
@@ -9,7 +10,7 @@ export const ProjectForm = () => {
 
     const onCreateProject = () => {
 
-        axios.post('http://localhost:5000/api/create/project', {
+        axios.post(`${baseUrl}/api/create/project`, {
             user_id: 9,
             project_name: projectName,
             start_date: startDate,

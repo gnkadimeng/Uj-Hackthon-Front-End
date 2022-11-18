@@ -1,5 +1,6 @@
 import axios from "axios";
+import { baseUrl } from "../global/baseUrl";
 
 
-export const fetchProjectsApi = () => axios.get('http://localhost:5000/api/view/projects')
+export const fetchProjectsApi = () => axios.get(`${baseUrl}/api/view/projects`)
     .then(res => res.data.projects);
