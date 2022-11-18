@@ -1,19 +1,9 @@
-import { UserProfile } from "../userProfile/UserProfile";
-import { useState } from 'react'
-import { ProjectForm } from "../projectForm/ProjectForm";
-import { TaskContent } from "../taskContent/TaskContent";
+import { NavLink } from "react-router-dom";
+import { CreateProjectButton } from "../CreateProjectButton";
 
 export const Main = ({ option }) => {
 
-    const renderOption = () => {
-        if (option === 'createProject') {
-            return <ProjectForm />
-        } else if (option === 'home') {
-            return <TaskContent />
-        }
-    }
-
     return (
-       renderOption()
+        <CreateProjectButton />
     );
 }

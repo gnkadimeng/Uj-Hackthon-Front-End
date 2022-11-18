@@ -1,68 +1,44 @@
-import { useState } from 'react'
-import Header from './components/Header'
-import Tasks from './components/Tasks'
-import AddTask from './components/AddTask'
-import Task from './components/Task'
+import { useEffect, useState } from 'react';
+import { BrowserRouter, useNavigate, useParams } from 'react-router-dom';
+import { Header } from './components/header/Header';
+import { Panel } from './components/panel/Panel';
+import { SideBar } from './components/sideBar/SideBar'
+import { fetchProjectsApi } from './fetchers/fetchProjectsApi';
+import { Router } from './Router';
 
 
 const App = () => {
-  const [showAddTask, setShowAddTask] = useState(false)
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: 'Doctor Appointment',
-      day: 'Feb 5th at 2:30pm',
-      reminder: true,
+  const [projects, setProjects] = useState([]);
+  const history = useNavigate();
 
-    },
+  const fetchProjects = () => fetchProjectsApi().then(data => {
+    setProjects(data);
+  });
 
-    {
-      id: 2,
-      text: 'Meeting at School',
-      day: 'Feb 6th at 1:30pm',
-      reminder: true,
-    },
-
-    {
-      id: 3,
-      text: 'Morning run',
-      day: 'Feb 7th at 6:30am',
-      reminder: true,
-    }
-  ])
-
-  // Add Task
-  const addTask = (task) => {
-    const id = Math.floor(Math.random() * 10000) + 1
-    const newTask = { id, ...task}
-    setTasks([...tasks, newTask])
-  }
-
-  //Delete Task
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id))
-  }
-
-  // Toggle reminder
-  const toggleReminder = (id) => {
-    setTasks(
-      tasks.map((task) => 
-      task.id === id ? {...task, reminder: 
-      !task.reminder}: task
-    )
-    )
-  }
+  useEffect(() => {
+    fetchProjects();
+  }, [history])
 
   return (
-    <div className="container">
-      <Header onAdd={() => setShowAddTask (!showAddTask)}/>
-      {showAddTask && <AddTask onAdd={addTask}/>}
-      {tasks.length > 0? (
-        <Tasks tasks={tasks} onDelete =
-        {deleteTask} onToggle={toggleReminder}/>
-        ) : (
-          'No Task to Show')}
-    </div>
+    <>
+      <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm">
+        <SideBar />
+        <div className="flex-grow overflow-hidden h-full flex flex-col">
+          <Header />
+          <div className="flex-grow flex overflow-x-hidden">
+            {/* <Panel projects={projects} /> */}
+            {/* {renderPanel()} */}
+            <Panel projects={projects} />
+            <div className="flex-grow bg-white dark:bg-gray-900 overflow-y-auto">
+              {/* <Main option={option} /> */}
+              {/* {renderTasks()} */}
+              {/* {renderMainContent(option)} */}
+              <Router />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
