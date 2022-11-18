@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { baseUrl } from "../global/baseUrl";
 
 const Auth = {
     isAuthenticated: false,
@@ -15,10 +16,10 @@ const Auth = {
             console.log(jwt.token !== '');
             console.log(getToken + " getting token");
             if (jwt.token !== '') {
-                await Axios.post('/api/rea_order/verify', jwt)
+                await Axios.post(`${baseUrl}/api/auth`, jwt)
                     .then(res => {
                         console.log(res);
-                        this.isAuthenticated = res.data.response;
+                        this.isAuthenticated = res.data.isAuthenticated;
                         this.client_id = res.data.client_id;
                         this.token = res.data.token;
                     });

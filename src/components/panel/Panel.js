@@ -1,16 +1,10 @@
-
-// import { NavLink } from "react-router-dom";
+import { Loader } from "../Loader";
 import { ProjectCard } from "../projectCard/ProjectCard";
 
 export const Panel = ({ projects }) => {
     // selected option : ring-2 ring-blue-500
     return (
         <div className="xl:w-72 w-48 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto lg:block hidden p-5">
-            {/* <div className="sm:p-3 py-2 px-1 border-b border-gray-200 dark:border-gray-800">
-                <NavLink to='/'>
-                    <button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Project</button>
-                </NavLink>
-            </div> */}
 
             <div className="text-xs text-gray-400 tracking-wider">Projects</div>
             <div className="relative mt-2">
@@ -21,13 +15,17 @@ export const Panel = ({ projects }) => {
                 </svg> */}
             </div>
             <div className="space-y-4 mt-3">
-                {projects.map((project, i) => (
-                    <ProjectCard
-                        projectName={project.project_name}
-                        key={i}
-                        projectId={project.id}
-                    />
-                ))}
+                {projects.length > 0 ?
+                    projects.map((project, i) => (
+                        <ProjectCard
+                            projectName={project.project_name}
+                            key={i}
+                            projectId={project.id}
+                        />
+                    ))
+                    :
+                    <Loader status={'Fetching projects'} />
+                }
             </div>
         </div>
     );

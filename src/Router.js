@@ -16,6 +16,7 @@ export const Router = () => {
                 <Route path='/subtask/info/:subtaskId' element={<TaskInfo />}></Route>
                 <Route path='/create/project' element={<Form />}></Route>
                 <Route path='/create/task' element={<TaskForm />}></Route>
+                <Route path='/create/subtask' element={<TaskForm />}></Route>
             </Routes>
         </>
     );
