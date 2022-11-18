@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { createTaskApi } from "../api/createTaskApi";
 import { fetchProjectsApi } from "../fetchers/fetchProjectsApi";
 import { fetchTeamLeadersApi } from "../fetchers/fetchTeamLeadersApi";
-import Auth from "../util/Auth";
+import { EventAlert } from "./EventAlert";
 
 export const TaskForm = () => {
     const [taskName, setTaskName] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [project, setProject] = useState();
-    const [teamLeader, setTeamLeader] = useState();
+    const [projectId, setProjectId] = useState();
+    const [teamLeaderId, setTeamLeaderId] = useState();
+    const [isRedirect, setRedirect] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     // select dropdown data
     const [teamLeaders, setTeamLeaders] = useState([]);
@@ -30,15 +34,20 @@ export const TaskForm = () => {
 
 
     const onSubmit = () => {
-        console.log(startDate, endDate);
         createTaskApi({
-            project_id: 1,
-            user_id: Auth.getClientId(),
+            project_id: projectId,
+            user_id: teamLeaderId,
             task_name: taskName,
             start_date: startDate,
             end_date: endDate
         }).then(data => {
-            console.log(data);
+            const { message, isCreated } = data;
+            setAlertMessage(message);
+            setShowAlert(true);
+            setTimeout(() => {
+                setRedirect(isCreated);
+            }, 1000)
+
         })
     }
 
@@ -48,7 +57,9 @@ export const TaskForm = () => {
         fetchProjects();
     }, [])
 
-    
+
+    if (isRedirect) return <Navigate to={'/'} />
+
     return (
         <>
             <div className="flex items-center justify-center p-12">
@@ -80,8 +91,8 @@ export const TaskForm = () => {
                         <div className="-mx-3 flex flex-wrap">
                             <div className="w-full px-3 sm:w-1/2">
                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700">Choose Project</label>
-                                <select onChange={(e) => setProject(e.target.value)} id="country" name="country" autoComplete="country-name" className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-                                    <option>Select project</option>
+                                <select onChange={(e) => setProjectId(e.target.value)} id="country" name="country" autoComplete="country-name" className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                                    <option>Select projectId</option>
                                     {projects.map(leader => (
                                         <option value={leader.id} key={leader.id}>{leader.project_name}</option>
                                     ))}
@@ -91,7 +102,7 @@ export const TaskForm = () => {
 
                             <div className="w-full px-3 sm:w-1/2">
                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700">Choose Team Leader</label>
-                                <select onChange={(e) => setTeamLeader(e.target.value)} required id="country" name="country" autoComplete="country-name" className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                                <select onChange={(e) => setTeamLeaderId(e.target.value)} required id="country" name="country" autoComplete="country-name" className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                     <option>Select leader</option>
                                     {teamLeaders.map(leader => (
                                         <option value={leader.id} key={leader.id}>{leader.name}</option>
@@ -150,13 +161,11 @@ export const TaskForm = () => {
                         </div>
                     </>
                 </div>
-
             </div>
-            {/* <EventAlert
+            <EventAlert
                 isAlert={showAlert}
-                alertType={alertType}
                 message={alertMessage}
-            /> */}
+            />
         </>
     );
 }

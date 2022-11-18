@@ -1,8 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { createProjectApi } from "../../api/createProjectApi";
-import { createTaskApi } from "../../api/createTaskApi";
 import Auth from "../../util/Auth";
 import { EventAlert } from "../EventAlert";
 
@@ -10,10 +8,9 @@ export const Form = () => {
     const history = useNavigate();
     const [formType, setFormType] = useState('');
     const [projectName, setProjectName] = useState('');
-    const [type, setType] = useState('');
+    // const [type, setType] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-    const [alertType, setAlertType] = useState('');
     const [isRedirect, setRedirect] = useState(false);
 
 
@@ -33,25 +30,13 @@ export const Form = () => {
                 "project_name": projectName,
             }
         ).then(data => {
-            const { message, isCreated, alertType } = data;
+            const { message, isCreated } = data;
             setAlertMessage(message);
-            setAlertType(alertType);
             setShowAlert(true);
             setTimeout(() => {
                 setRedirect(isCreated);
             }, 1000)
         })
-
-
-        // if (formType === 'Task') createTaskApi({
-        //     project_id: projectId,
-        //     user_id: userId,
-        //     task_name: taskName,
-        //     start_date: startDate,
-        //     end_date: endtDate
-        // }).then(data => {
-
-        // })
 
     }
 
@@ -86,7 +71,7 @@ export const Form = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="w-full px-3 sm:w-1/2">
+                            {/* <div className="w-full px-3 sm:w-1/2">
                                 <div className="mb-5">
                                     <label
                                         htmlFor="lName"
@@ -103,7 +88,7 @@ export const Form = () => {
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
 
@@ -160,9 +145,9 @@ export const Form = () => {
                 </div>
 
             </div>
+            
             <EventAlert
                 isAlert={showAlert}
-                alertType={alertType}
                 message={alertMessage}
             />
         </>

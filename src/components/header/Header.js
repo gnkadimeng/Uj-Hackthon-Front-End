@@ -1,12 +1,13 @@
+import { NavLink } from "react-router-dom";
 
 export const Header = () => {
     // selected option : border-blue-500 text-blue-500
     return (
         <div className="h-16 lg:flex w-full border-b border-gray-200 dark:border-gray-800 hidden px-10">
             <div className="flex h-full text-gray-600 dark:text-gray-400">
-                <a href="#" className="cursor-pointer h-full border-b-2 border-transparent inline-flex items-center mr-8">Projects</a>
-                <a href="#" className="cursor-pointer h-full border-b-2  dark:text-white dark:border-white inline-flex mr-8 items-center">Users</a>
-                <a href="#" className="cursor-pointer h-full border-b-2 border-transparent inline-flex items-center mr-8">Notifications</a>
+                <NavLink to={'/'} className="cursor-pointer h-full border-b-2 border-transparent inline-flex items-center mr-8">Projects</NavLink>
+                <NavLink to={'/users'} className="cursor-pointer h-full border-b-2  dark:text-white dark:border-white inline-flex mr-8 items-center">Users</NavLink>
+                <NavLink to={'/notifications'} className="cursor-pointer h-full border-b-2 border-transparent inline-flex items-center mr-8">Notifications</NavLink>
             </div>
             <div className="ml-auto flex items-center space-x-7">
 
