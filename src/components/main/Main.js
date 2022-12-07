@@ -1,9 +1,8 @@
-import { NavLink } from "react-router-dom";
-import { CreateProjectButton } from "../CreateProjectButton";
+import { CreateTaskButton } from "../CreateTaskButton";
 
 export const Main = ({ option }) => {
 
     return (
-        <CreateProjectButton />
+        <CreateTaskButton />
     );
 }
